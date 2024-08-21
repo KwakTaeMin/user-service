@@ -38,10 +38,11 @@ dependencies {
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0'
 
     // connector
-    compileOnly 'org.projectlombok:lombok'
+    implementation 'mysql:mysql-connector-java:8.0.33'
 
     // lombok
     annotationProcessor 'org.projectlombok:lombok'
+    compileOnly 'org.projectlombok:lombok'
 
     //test
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
