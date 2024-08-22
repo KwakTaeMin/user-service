@@ -7,6 +7,10 @@ spring:
     password: user
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
+    show-sql: true
     hibernate:
       ddl-auto: none
     open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
