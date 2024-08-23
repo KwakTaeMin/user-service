@@ -48,4 +48,10 @@ public class UserOAuth extends BaseEntity {
         this.refreshToken = refreshToken;
         this.tokenExpirationAt = tokenExpirationAt;
     }
+
+    public void updateTokens(String accessToken, String refreshToken, LocalDateTime tokenExpirationAt) {
+        this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
+        this.tokenExpirationAt = tokenExpirationAt;
+    }
 }
