@@ -37,22 +37,15 @@ public class UserOAuth extends BaseEntity {
     private OAuthProvider oAuthProvider;
     private String providerUserId;
     private String accessToken;
-    private String refreshToken;
-    private LocalDateTime expiredAt;
 
-    public UserOAuth(User user, OAuthProvider oAuthProvider, String providerUserId, String accessToken, String refreshToken,
-                     LocalDateTime expiredAt) {
+    public UserOAuth(User user, OAuthProvider oAuthProvider, String providerUserId, String accessToken) {
         this.user = user;
         this.oAuthProvider = oAuthProvider;
         this.providerUserId = providerUserId;
         this.accessToken = accessToken;
-        this.refreshToken = refreshToken;
-        this.expiredAt = expiredAt;
     }
 
-    public void updateTokens(String accessToken, String refreshToken, LocalDateTime expiredAt) {
+    public void updateTokens(String accessToken) {
         this.accessToken = accessToken;
-        this.refreshToken = refreshToken;
-        this.expiredAt = expiredAt;
     }
 }
