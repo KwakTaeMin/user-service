@@ -17,12 +17,16 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http, OAuthAuthenticationSuccessHandler oAuthAuthenticationSuccessHandler) throws Exception {
         http
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/login", "/oauth2/**").permitAll()
-                .anyRequest().authenticated()
+                    .requestMatchers("/login", "/oauth2/**").permitAll()
+                    .anyRequest().authenticated()
             )
             .oauth2Login(oauth2 -> oauth2
-                .loginPage("/login")
-                .successHandler(oAuthAuthenticationSuccessHandler)
+                    //.loginPage("/login") front login page
+                    .successHandler(oAuthAuthenticationSuccessHandler)
+                    //.defaultSuccessUrl("/", true)
+            ).logout(logout -> logout
+                    .logoutSuccessUrl("/login?logout") // 로그아웃 후 리다이렉트 URL
+                    .permitAll()
             );
 
         return http.build();

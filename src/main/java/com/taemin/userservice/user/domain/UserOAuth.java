@@ -22,11 +22,12 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "oauth_provider"})})
+@Table(name = "user_oauth", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "oauth_provider"})})
 public class UserOAuth extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_oauth_id")
     private Long userOAuthId;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
@@ -37,21 +38,21 @@ public class UserOAuth extends BaseEntity {
     private String providerUserId;
     private String accessToken;
     private String refreshToken;
-    private LocalDateTime tokenExpirationAt;
+    private LocalDateTime expiredAt;
 
     public UserOAuth(User user, OAuthProvider oAuthProvider, String providerUserId, String accessToken, String refreshToken,
-                     LocalDateTime tokenExpirationAt) {
+                     LocalDateTime expiredAt) {
         this.user = user;
         this.oAuthProvider = oAuthProvider;
         this.providerUserId = providerUserId;
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
-        this.tokenExpirationAt = tokenExpirationAt;
+        this.expiredAt = expiredAt;
     }
 
-    public void updateTokens(String accessToken, String refreshToken, LocalDateTime tokenExpirationAt) {
+    public void updateTokens(String accessToken, String refreshToken, LocalDateTime expiredAt) {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
-        this.tokenExpirationAt = tokenExpirationAt;
+        this.expiredAt = expiredAt;
     }
 }
