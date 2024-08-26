@@ -27,13 +27,6 @@ public class SecurityConfig {
     private final OAuthAuthenticationSuccessHandler oAuthAuthenticationSuccessHandler;
 
     @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return web -> web.ignoring()
-            .requestMatchers("/error", "/favicon.ico","/swagger-ui/**", "/v3/api-docs/**");
-    }
-
-
-    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .csrf(AbstractHttpConfigurer::disable)
@@ -44,7 +37,13 @@ public class SecurityConfig {
             .headers(c -> c.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable).disable()) // X-Frame-Options 비활성화
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // session 미사용
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/login", "/oauth2/**", " /swagger-ui/**").permitAll()
+                .requestMatchers(
+                    "/error",
+                    "/oauth2/**",
+                    "/auth/success",
+                    "/swagger-ui/**",
+                    "/v3/api-docs/**",
+                    "/favicon.ico").permitAll()
                 .anyRequest().authenticated()
             )
             .addFilterBefore(tokenExceptionFilter, UsernamePasswordAuthenticationFilter.class)
@@ -55,7 +54,7 @@ public class SecurityConfig {
             )
             .addFilterBefore(tokenExceptionFilter, UsernamePasswordAuthenticationFilter.class)
             .addFilterBefore(new TokenExceptionFilter(), tokenExceptionFilter.getClass()) // 토큰 예외 핸들링
-            .exceptionHandling((exceptions) -> exceptions
+            .exceptionHandling(exceptions -> exceptions
                 .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
                 .accessDeniedHandler(new CustomAccessDeniedHandler()));
 
