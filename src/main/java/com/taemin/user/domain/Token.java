@@ -12,14 +12,14 @@ import lombok.NoArgsConstructor;
 public class Token extends BaseEntity { //redis 변경 필요
 
     @Id
-    private String id;
+    private Long userId;
 
     private String refreshToken;
 
     private String accessToken;
 
-    public Token(String id, String refreshToken, String accessToken) {
-        this.id = id;
+    public Token(Long userId, String refreshToken, String accessToken) {
+        this.userId = userId;
         this.refreshToken = refreshToken;
         this.accessToken = accessToken;
     }

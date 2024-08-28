@@ -22,10 +22,10 @@ public class TokenService {
     }
 
     @Transactional
-    public void saveOrUpdate(String tokenKey, String refreshToken, String accessToken) {
+    public void saveOrUpdate(Long userId, String refreshToken, String accessToken) {
         Token token = tokenRepository.findByAccessToken(accessToken)
                 .map(o -> o.updateRefreshToken(refreshToken))
-                .orElseGet(() -> new Token(tokenKey, refreshToken, accessToken));
+                .orElseGet(() -> new Token(userId, refreshToken, accessToken));
 
         tokenRepository.save(token);
     }

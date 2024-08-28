@@ -1,5 +1,6 @@
 package com.taemin.user.service;
 
+import com.taemin.user.domain.PrincipalDetails;
 import com.taemin.user.exception.TokenException;
 import com.taemin.user.domain.Token;
 import io.jsonwebtoken.Claims;
@@ -44,13 +45,16 @@ public class TokenProvider {
     }
 
     public String generateToken(Authentication authentication) {
+
+
         return generateToken(authentication, ACCESS_TOKEN_EXPIRE_TIME);
     }
 
     // 1. refresh token 발급
     public void refreshToken(Authentication authentication, String accessToken) {
         String refreshToken = generateToken(authentication, REFRESH_TOKEN_EXPIRE_TIME);
-        tokenService.saveOrUpdate(authentication.getName(), refreshToken, accessToken); // redis에 저장
+        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+        tokenService.saveOrUpdate(principalDetails.user().getUserId(), refreshToken, accessToken); // redis에 저장
     }
 
     private String generateToken(Authentication authentication, long expireTime) {

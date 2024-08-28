@@ -1,5 +1,6 @@
 package com.taemin.user.config;
 
+import com.taemin.user.filter.TokenAuthenticationFilter;
 import com.taemin.user.filter.TokenExceptionFilter;
 import com.taemin.user.handler.CustomAccessDeniedHandler;
 import com.taemin.user.handler.CustomAuthenticationEntryPoint;
@@ -22,7 +23,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final TokenExceptionFilter tokenExceptionFilter;
+    private final TokenAuthenticationFilter tokenAuthenticationFilter;
     private final CustomOAuth2UserService oAuth2UserService;
     private final OAuthAuthenticationSuccessHandler oAuthAuthenticationSuccessHandler;
 
@@ -51,8 +52,8 @@ public class SecurityConfig {
                              oauth.userInfoEndpoint(c -> c.userService(oAuth2UserService))
                                  .successHandler(oAuthAuthenticationSuccessHandler)
             )
-            .addFilterBefore(tokenExceptionFilter, UsernamePasswordAuthenticationFilter.class)
-            .addFilterBefore(new TokenExceptionFilter(), tokenExceptionFilter.getClass()) // 토큰 예외 핸들링
+            .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(new TokenExceptionFilter(), tokenAuthenticationFilter.getClass())
             .exceptionHandling(exceptions -> exceptions
                 .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
                 .accessDeniedHandler(new CustomAccessDeniedHandler()));
