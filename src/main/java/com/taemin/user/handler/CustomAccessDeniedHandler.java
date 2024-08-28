@@ -7,8 +7,10 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
 import java.io.IOException;
+import org.springframework.stereotype.Component;
 
 @Slf4j
+@Component
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
     @Override

@@ -12,7 +12,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @Component
 @RequiredArgsConstructor
-public class OAuthAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
 
     private final TokenProvider tokenProvider;
     private static final String URI = "/auth/login/success";
