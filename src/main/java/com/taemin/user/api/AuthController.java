@@ -1,6 +1,5 @@
 package com.taemin.user.api;
 
-import com.taemin.user.domain.PrincipalDetails;
 import com.taemin.user.dto.LoginResponse;
 import com.taemin.user.service.TokenService;
 import jakarta.validation.Valid;
@@ -26,8 +25,8 @@ public class AuthController {
 
 
     @GetMapping("/login/fail")
-    public ResponseEntity<LoginResponse> loginFail(@Valid LoginResponse loginResponse) {
-        return ResponseEntity.ok(loginResponse);
+    public ResponseEntity<String> loginFail() {
+        return ResponseEntity.ok("login fail");
     }
 
     @GetMapping("/logout")
