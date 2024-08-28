@@ -1,6 +1,7 @@
 package com.taemin.user.domain;
 
 import com.taemin.user.common.BaseEntity;
+import com.taemin.user.type.OAuthProvider;
 import com.taemin.user.type.Role;
 import jakarta.persistence.*;
 
@@ -23,12 +24,16 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private Role role;
+    @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    private OAuthProvider oauthProvider;
 
     @Builder
-    public User(String name, String email, String profile, Role role) {
+    public User(String name, String email, String profile, Role role, OAuthProvider oauthProvider) {
         this.name = name;
         this.email = email;
         this.profile = profile;
         this.role = role;
+        this.oauthProvider = oauthProvider;
     }
 }

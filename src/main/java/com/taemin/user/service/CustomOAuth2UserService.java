@@ -26,16 +26,17 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         Map<String, Object> oAuth2UserAttributes = super.loadUser(userRequest).getAttributes();
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
+
         String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails()
                 .getUserInfoEndpoint().getUserNameAttributeName();
         OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfo.of(registrationId, oAuth2UserAttributes);
-        User user = getOrSave(oAuth2UserInfo);
+        User user = getOrSave(registrationId, oAuth2UserInfo);
         return new PrincipalDetails(user, oAuth2UserAttributes, userNameAttributeName);
     }
 
-    private User getOrSave(OAuth2UserInfo oAuth2UserInfo) {
+    private User getOrSave(String registrationId, OAuth2UserInfo oAuth2UserInfo) {
         User user = userRepository.findByEmail(oAuth2UserInfo.email())
-                .orElseGet(oAuth2UserInfo::toEntity);
+                .orElseGet(() -> oAuth2UserInfo.toEntity(registrationId));
         return userRepository.save(user);
     }
 }

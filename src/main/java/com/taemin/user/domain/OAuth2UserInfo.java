@@ -1,6 +1,7 @@
 package com.taemin.user.domain;
 
 import com.taemin.user.exception.AuthException;
+import com.taemin.user.type.OAuthProvider;
 import com.taemin.user.type.Role;
 import lombok.Builder;
 import java.util.Map;
@@ -17,6 +18,7 @@ public record OAuth2UserInfo(
         return switch (registrationId) { // registration id별로 userInfo 생성
             case "google" -> ofGoogle(attributes);
             case "kakao" -> ofKakao(attributes);
+            case "naver" -> ofNaver(attributes);
             default -> throw new AuthException(ILLEGAL_REGISTRATION_ID);
         };
     }
@@ -40,12 +42,21 @@ public record OAuth2UserInfo(
                 .build();
     }
 
-    public User toEntity() {
+    private static OAuth2UserInfo ofNaver(Map<String, Object> attributes) {
+        return OAuth2UserInfo.builder()
+                .name((String) attributes.get("nickname"))
+                .email((String) attributes.get("email"))
+                .profile((String) attributes.get("profile_image"))
+                .build();
+    }
+
+    public User toEntity(String registrationId) {
         return User.builder()
                 .name(name)
                 .email(email)
                 .profile(profile)
                 .role(Role.USER)
+                .oauthProvider(OAuthProvider.valueOf(registrationId.toUpperCase()))
                 .build();
     }
 }
