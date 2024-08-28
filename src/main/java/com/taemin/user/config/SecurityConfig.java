@@ -41,7 +41,8 @@ public class SecurityConfig {
                 .requestMatchers(
                     "/error",
                     "/oauth2/**",
-                    "/auth/success",
+                    "/auth/login/success",
+                    "/auth/login/fail",
                     "/swagger-ui/**",
                     "/v3/api-docs/**",
                     "/favicon.ico").permitAll()

@@ -15,7 +15,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class OAuthAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
     private final TokenProvider tokenProvider;
-    private static final String URI = "/auth/success";
+    private static final String URI = "/auth/login/success";
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
