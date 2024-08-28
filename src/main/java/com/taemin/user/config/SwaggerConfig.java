@@ -2,6 +2,7 @@ package com.taemin.user.config;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.OAuthFlow;
 import io.swagger.v3.oas.models.security.OAuthFlows;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
@@ -24,7 +25,7 @@ public class SwaggerConfig {
                                 .scheme("bearer")
                                 .bearerFormat("JWT")
                             )
-                            .addSecuritySchemes("OAuth2", new SecurityScheme()
+                            .addSecuritySchemes("Google OAuth2", new SecurityScheme()
                                 .type(SecurityScheme.Type.OAUTH2)
                                 .flows(new OAuthFlows()
                                            .authorizationCode(new OAuthFlow()
@@ -33,9 +34,20 @@ public class SwaggerConfig {
                                            )
                                 )
                             )
+                            .addSecuritySchemes("Kakao OAuth2", new SecurityScheme()
+                                .type(SecurityScheme.Type.OAUTH2)
+                                .flows(new OAuthFlows()
+                                           .authorizationCode(new OAuthFlow()
+                                                                  .authorizationUrl("/oauth2/authorization/kakao")
+                                                                  .tokenUrl("/login/oauth2/code/kakao")
+                                           )
+                                )
+                            )
             )
             .addSecurityItem(new SecurityRequirement().addList("bearerAuth").addList("OAuth2"))
-            .servers(List.of(new Server().url("http://localhost:8080")));
+            .servers(List.of(new Server().url("http://localhost:8080")))
+            .info(new Info().title("User Service").version("1.0"));
+
     }
 
     @Bean

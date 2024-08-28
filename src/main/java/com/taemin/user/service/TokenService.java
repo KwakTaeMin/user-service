@@ -1,5 +1,6 @@
 package com.taemin.user.service;
 
+import com.taemin.user.domain.User;
 import com.taemin.user.exception.TokenException;
 import com.taemin.user.domain.Token;
 import com.taemin.user.repository.TokenRepository;
@@ -17,16 +18,15 @@ public class TokenService {
 
     private final TokenRepository tokenRepository;
 
-    public void deleteRefreshToken(String memberKey) {
-        tokenRepository.deleteById(memberKey);
+    public void deleteRefreshToken(Long userId) {
+        tokenRepository.deleteById(userId);
     }
 
     @Transactional
-    public void saveOrUpdate(Long userId, String refreshToken, String accessToken) {
+    public void saveOrUpdate(User user, String refreshToken, String accessToken) {
         Token token = tokenRepository.findByAccessToken(accessToken)
                 .map(o -> o.updateRefreshToken(refreshToken))
-                .orElseGet(() -> new Token(userId, refreshToken, accessToken));
-
+                .orElseGet(() -> new Token(user.getUserId(), refreshToken, accessToken));
         tokenRepository.save(token);
     }
 

@@ -1,6 +1,6 @@
 logging.level.web: debug
 jwt:
-  key: c3ByaW5nLWJvb3QtYXBpLWp3dC1zZWNyZXQta2V5LXN1cGVyLXNlY3JldC15ZXMteWVzLXllcy0yNAo=
+  key: ${JWT_KET}
 spring:
   application:
     name: user-service

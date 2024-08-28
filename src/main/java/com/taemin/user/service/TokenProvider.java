@@ -45,8 +45,6 @@ public class TokenProvider {
     }
 
     public String generateToken(Authentication authentication) {
-
-
         return generateToken(authentication, ACCESS_TOKEN_EXPIRE_TIME);
     }
 
@@ -54,7 +52,7 @@ public class TokenProvider {
     public void refreshToken(Authentication authentication, String accessToken) {
         String refreshToken = generateToken(authentication, REFRESH_TOKEN_EXPIRE_TIME);
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-        tokenService.saveOrUpdate(principalDetails.user().getUserId(), refreshToken, accessToken); // redis에 저장
+        tokenService.saveOrUpdate(principalDetails.user(), refreshToken, accessToken); // redis에 저장
     }
 
     private String generateToken(Authentication authentication, long expireTime) {
