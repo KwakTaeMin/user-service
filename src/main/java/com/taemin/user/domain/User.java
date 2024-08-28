@@ -24,16 +24,18 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private Role role;
+    private String oauthId;
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private OAuthProvider oauthProvider;
 
     @Builder
-    public User(String name, String email, String profile, Role role, OAuthProvider oauthProvider) {
+    public User(String name, String email, String profile, Role role, OAuthProvider oauthProvider, String oauthId) {
         this.name = name;
         this.email = email;
         this.profile = profile;
         this.role = role;
+        this.oauthId = oauthId;
         this.oauthProvider = oauthProvider;
     }
 }

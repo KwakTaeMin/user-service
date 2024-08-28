@@ -9,6 +9,7 @@ import static com.taemin.user.common.ErrorCode.ILLEGAL_REGISTRATION_ID;
 
 @Builder
 public record OAuth2UserInfo(
+        String oAuthId,
         String name,
         String email,
         String profile
@@ -25,6 +26,7 @@ public record OAuth2UserInfo(
 
     private static OAuth2UserInfo ofGoogle(Map<String, Object> attributes) {
         return OAuth2UserInfo.builder()
+                .oAuthId((String)attributes.get("sub"))
                 .name((String) attributes.get("name"))
                 .email((String) attributes.get("email"))
                 .profile((String) attributes.get("picture"))
@@ -36,6 +38,7 @@ public record OAuth2UserInfo(
         Map<String, Object> profile = (Map<String, Object>) account.get("profile");
 
         return OAuth2UserInfo.builder()
+                .oAuthId(String.valueOf(attributes.get("id")))
                 .name((String) profile.get("nickname"))
                 .email((String) account.get("email"))
                 .profile((String) profile.get("profile_image_url"))
@@ -43,10 +46,13 @@ public record OAuth2UserInfo(
     }
 
     private static OAuth2UserInfo ofNaver(Map<String, Object> attributes) {
+        Map<String, Object> account = (Map<String, Object>) attributes.get("response");
+
         return OAuth2UserInfo.builder()
-                .name((String) attributes.get("nickname"))
-                .email((String) attributes.get("email"))
-                .profile((String) attributes.get("profile_image"))
+                .oAuthId((String)account.get("id"))
+                .name((String) account.get("nickname"))
+                .email((String) account.get("email"))
+                .profile((String) account.get("profile_image"))
                 .build();
     }
 
@@ -56,6 +62,7 @@ public record OAuth2UserInfo(
                 .email(email)
                 .profile(profile)
                 .role(Role.USER)
+                .oauthId(oAuthId)
                 .oauthProvider(OAuthProvider.valueOf(registrationId.toUpperCase()))
                 .build();
     }

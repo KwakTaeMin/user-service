@@ -35,7 +35,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     }
 
     private User getOrSave(String registrationId, OAuth2UserInfo oAuth2UserInfo) {
-        User user = userRepository.findByEmail(oAuth2UserInfo.email())
+        User user = userRepository.findByOauthId(oAuth2UserInfo.oAuthId())
                 .orElseGet(() -> oAuth2UserInfo.toEntity(registrationId));
         return userRepository.save(user);
     }
