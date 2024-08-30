@@ -3,7 +3,7 @@ version: '3.8'
 services:
   mysql:
     image: mysql:8.0
-    container_name: sample_mysql_container
+    container_name: user-service-db
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: user-service
@@ -13,6 +13,21 @@ services:
       - "3307:3306"
     volumes:
       - ./mysql_data:/var/lib/mysql
+    networks:
+      - user-network
 
+  user-service:
+    image: user-service:0.0.1
+    container_name: user-service-app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+    networks:
+      - user-network
+
+networks:
+  user-network:
+    driver: bridge
 volumes:
   mysql_data:
