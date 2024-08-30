@@ -9,17 +9,23 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Token extends BaseEntity { //redis 변경 필요
+public class Token extends BaseEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
+
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "user_id")
+    private User user;
 
     private String refreshToken;
 
     private String accessToken;
 
-    public Token(Long userId, String refreshToken, String accessToken) {
-        this.userId = userId;
+    public Token(User user, String refreshToken, String accessToken) {
+        this.user = user;
         this.refreshToken = refreshToken;
         this.accessToken = accessToken;
     }
