@@ -1,7 +1,6 @@
 FROM amazoncorretto:21 AS build
 WORKDIR /user-service
 COPY . .
-COPY .env .env
 RUN ./gradlew build --no-daemon
 
 FROM amazoncorretto:21
