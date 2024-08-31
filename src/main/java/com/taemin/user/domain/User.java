@@ -1,6 +1,7 @@
 package com.taemin.user.domain;
 
 import com.taemin.user.common.BaseEntity;
+import com.taemin.user.convert.EncryptConverter;
 import com.taemin.user.type.OAuthProvider;
 import com.taemin.user.type.Role;
 import jakarta.persistence.*;
@@ -19,6 +20,7 @@ public class User extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
     private String name;
+    @Convert(converter = EncryptConverter.class)
     private String email;
     private String profile;
     @Column(nullable = false)
