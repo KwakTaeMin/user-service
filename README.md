@@ -37,18 +37,6 @@ NAVER_REDIRECT_URI=http://localhost:8080/login/oauth2/code/naver
 - Docker Image Build
 
 ```bash
-docker build -t my-spring-boot-app .
-```
-
-- Docker Image Container start
-
-```bash
-docker run -d -p 8080:8080 my-spring-boot-app
-```
-
-- Docker Image
-
-```bash
 docker build -t user-service:0.0.1 .
 ```
 
