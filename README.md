@@ -41,5 +41,5 @@ docker build -t user-service:0.0.1 .
 ```
 
 ```bash
-`docker-compse up` -d #mysql, user-service container
+docker-compose up -d #mysql, user-service container
 ```
