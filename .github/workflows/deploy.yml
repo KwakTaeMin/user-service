@@ -38,6 +38,11 @@ jobs:
         env:
           DOCKER_HOST: ssh://${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}
 
+      - name: Copy docker-compose.yml file to EC2
+        run: |
+          scp -i ssh_key.pem -o StrictHostKeyChecking=no docker-compose.yml ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USER }}/docker-compose.yml
+          ssh -i ssh_key.pem -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} 'sudo chmod 700 docker-compose.yml'
+
       - name: Stop existing Docker containers
         run: |
           ssh -i ssh_key.pem -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} 'cd /home/${{ secrets.EC2_USER }} && sudo docker-compose down'

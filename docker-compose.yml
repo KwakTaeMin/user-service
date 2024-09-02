@@ -25,6 +25,8 @@ services:
       - mysql
     networks:
       - user-network
+    volumes:
+      - ./logs:/logs
 
 networks:
   user-network:
