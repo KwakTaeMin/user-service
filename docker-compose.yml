@@ -19,18 +19,8 @@ services:
   user-service:
     image: user-service:0.0.1
     container_name: user-service-app
-    environment:
-      - MYSQL_USER=${MYSQL_USER}
-      - MYSQL_USER_PASSWORD=${MYSQL_USER_PASSWORD}
-      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
-      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
-      - GOOGLE_REDIRECT_URI=${GOOGLE_REDIRECT_URI}
-      - KAKAO_CLIENT_ID=${KAKAO_CLIENT_ID}
-      - KAKAO_CLIENT_SECRET=${KAKAO_CLIENT_SECRET}
-      - KAKAO_REDIRECT_URI=${KAKAO_REDIRECT_URI}
-      - NAVER_CLIENT_ID=${NAVER_CLIENT_ID}
-      - NAVER_CLIENT_SECRET=${NAVER_CLIENT_SECRET}
-      - NAVER_REDIRECT_URI=${NAVER_REDIRECT_URI}
+    env_file:
+      - .env
     ports:
       - "80:8080"
     depends_on:
