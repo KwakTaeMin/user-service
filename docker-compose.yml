@@ -26,7 +26,7 @@ services:
     networks:
       - user-network
     volumes:
-      - ./logs:/logs
+      - ./logs:/user-service/logs
 
 networks:
   user-network:
