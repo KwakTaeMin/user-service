@@ -27,6 +27,12 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           port: 22
 
+      - name: Check docker-compose installation
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} 'which docker-compose'
+        env:
+          DOCKER_HOST: ssh://${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}
+
       - name: Stop existing Docker containers
         run: /usr/local/bin/docker-compose down
         env:
