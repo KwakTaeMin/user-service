@@ -1,18 +1,17 @@
 package com.taemin.user.domain;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
-
 public record PrincipalDetails(
-        User user,
-        Map<String, Object> attributes,
-        String attributeKey) implements OAuth2User, UserDetails {
+    User user,
+    Map<String, Object> attributes,
+    String attributeKey) implements OAuth2User, UserDetails {
 
     @Override
     public String getName() {
@@ -27,7 +26,7 @@ public record PrincipalDetails(
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singletonList(
-                new SimpleGrantedAuthority(user.getRole().getKey()));
+            new SimpleGrantedAuthority(user.getRole().getKey()));
     }
 
     @Override

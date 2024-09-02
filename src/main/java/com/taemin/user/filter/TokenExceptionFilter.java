@@ -20,7 +20,7 @@ public class TokenExceptionFilter extends OncePerRequestFilter {
         @Nullable HttpServletResponse response,
         @Nullable FilterChain filterChain
     ) throws ServletException, IOException {
-        if(Objects.nonNull(request) && Objects.nonNull(response) && Objects.nonNull(filterChain)) {
+        if (Objects.nonNull(request) && Objects.nonNull(response) && Objects.nonNull(filterChain)) {
             try {
                 filterChain.doFilter(request, response);
             } catch (TokenException e) {
