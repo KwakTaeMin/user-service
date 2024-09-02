@@ -53,7 +53,7 @@ public class SwaggerConfig {
                 )
             )
             .addSecurityItem(new SecurityRequirement().addList("bearerAuth").addList("OAuth2"))
-            .servers(List.of(new Server().url("http://localhost:8080")))
+            .servers(List.of(new Server().url("http://localhost:8080"), new Server().url("ec2-3-38-210-40.ap-northeast-2.compute.amazonaws.com")))
             .info(new Info().title("User Service").version("1.0"));
 
     }
