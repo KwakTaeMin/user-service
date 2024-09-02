@@ -5,6 +5,7 @@ import com.taemin.user.convert.EncryptConverter;
 import com.taemin.user.type.OAuthProvider;
 import com.taemin.user.type.Role;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
