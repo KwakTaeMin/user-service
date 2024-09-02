@@ -45,7 +45,7 @@ jobs:
 
       - name: Stop existing Docker containers
         run: |
-          ssh -i ssh_key.pem -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} 'cd /home/${{ secrets.EC2_USER }} && sudo docker-compose down'
+          ssh -i ssh_key.pem -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} 'cd /home/${{ secrets.EC2_USER }} && sudo docker-compose down --build'
         env:
           DOCKER_HOST: ssh://${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}
 
@@ -57,6 +57,6 @@ jobs:
 
       - name: Start Docker containers
         run: |
-          ssh -i ssh_key.pem -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} 'cd /home/${{ secrets.EC2_USER }} && sudo docker-compose up -d'
+          ssh -i ssh_key.pem -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} 'cd /home/${{ secrets.EC2_USER }} && sudo docker-compose --env-file .env up --build -d'
         env:
           DOCKER_HOST: ssh://${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}
