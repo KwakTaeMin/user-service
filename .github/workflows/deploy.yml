@@ -40,7 +40,7 @@ jobs:
           DOCKER_HOST: ssh://${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}
 
       - name: Stop existing Docker containers
-        run: /usr/local/bin/docker-compose down
+        run: docker-compose down
         env:
           DOCKER_HOST: ssh://${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}
 
@@ -49,6 +49,6 @@ jobs:
           docker save user-service | bzip2 | ssh -i ${{ secrets.EC2_SSH_KEY }} ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} 'bunzip2 | docker load'
           
       - name: Start Docker containers
-        run: /usr/local/bin/docker-compose up -d
+        run: docker-compose up -d
         env:
           DOCKER_HOST: ssh://${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}
