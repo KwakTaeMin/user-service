@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
+import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,15 +31,17 @@ public class Token extends BaseEntity {
 
     private String accessToken;
 
-    public Token(User user, String refreshToken, String accessToken) {
+    public Token(User user, String accessToken, String refreshToken) {
         this.user = user;
         this.refreshToken = refreshToken;
         this.accessToken = accessToken;
     }
 
-    public Token updateRefreshToken(String refreshToken) {
+    public void updateToken(String accessToken, String refreshToken) {
+        if (!Objects.equals(this.accessToken, accessToken)) {
+            this.accessToken = accessToken;
+        }
         this.refreshToken = refreshToken;
-        return this;
     }
 
     public void updateAccessToken(String accessToken) {

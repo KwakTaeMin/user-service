@@ -4,6 +4,7 @@ import com.taemin.user.domain.Token;
 import com.taemin.user.domain.User;
 import com.taemin.user.exception.TokenException;
 import com.taemin.user.repository.TokenRepository;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,11 +23,13 @@ public class TokenService {
     }
 
     @Transactional
-    public void saveOrUpdate(final User user, String refreshToken, String accessToken) {
-        Token token = tokenRepository.findByAccessToken(accessToken)
-            .map(o -> o.updateRefreshToken(refreshToken))
-            .orElseGet(() -> new Token(user, refreshToken, accessToken));
-        tokenRepository.save(token);
+    public void saveOrUpdate(final User user, String accessToken, String refreshToken) {
+        tokenRepository.findById(user.getUserId()).ifPresentOrElse(token -> {
+            token.updateToken(accessToken, refreshToken);
+            tokenRepository.save(token);
+        }, () -> {
+            tokenRepository.save(new Token(user, accessToken, refreshToken));
+        });
     }
 
     public Token findByAccessTokenOrThrow(String accessToken) {
@@ -35,7 +38,7 @@ public class TokenService {
     }
 
     @Transactional
-    public void updateToken(String accessToken, Token token) {
+    public void updateToken(Token token, String accessToken) {
         token.updateAccessToken(accessToken);
         tokenRepository.save(token);
     }

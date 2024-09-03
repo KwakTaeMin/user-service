@@ -55,7 +55,7 @@ public class TokenProvider {
         String refreshToken = generateToken(authentication, REFRESH_TOKEN_EXPIRE_TIME);
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
         User user = entityManager.merge(principalDetails.user());
-        tokenService.saveOrUpdate(user, refreshToken, accessToken);
+        tokenService.saveOrUpdate(user, accessToken, refreshToken);
     }
 
     private String generateToken(Authentication authentication, long expireTime) {
@@ -89,7 +89,6 @@ public class TokenProvider {
             claims.get(KEY_ROLE).toString()));
     }
 
-
     public String reissueAccessToken(String accessToken) {
         if (StringUtils.hasText(accessToken)) {
             Token token = tokenService.findByAccessTokenOrThrow(accessToken);
@@ -97,7 +96,7 @@ public class TokenProvider {
 
             if (validateToken(refreshToken)) {
                 String reissueAccessToken = generateToken(getAuthentication(refreshToken));
-                tokenService.updateToken(reissueAccessToken, token);
+                tokenService.updateToken(token, reissueAccessToken);
                 return reissueAccessToken;
             }
         }
