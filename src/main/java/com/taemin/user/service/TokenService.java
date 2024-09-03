@@ -4,7 +4,6 @@ import com.taemin.user.domain.Token;
 import com.taemin.user.domain.User;
 import com.taemin.user.exception.TokenException;
 import com.taemin.user.repository.TokenRepository;
-import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
