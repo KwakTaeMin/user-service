@@ -9,6 +9,9 @@ services:
       MYSQL_DATABASE: user-service
       MYSQL_USER: user
       MYSQL_PASSWORD: user
+      TZ: Asia/Seoul
+      MYSQL_CHARACTER_SET_SERVER: utf8mb4
+      MYSQL_COLLATION_SERVER: utf8mb4_unicode_ci
     ports:
       - "3307:3306"
     volumes:
