@@ -12,6 +12,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
+import java.util.Date;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -45,14 +47,7 @@ public class AccessLog {
         this.userAgent = userAgent;
     }
 
-    public static AccessLog of(
-        User user,
-        AccessType accessType,
-        boolean state,
-        LocalDateTime loginTime,
-        IP ip,
-        UserAgent userAgent
-    ) {
-        return new AccessLog(user, accessType, state, loginTime, ip, userAgent);
+    public static AccessLog ofLogin(User user, IP ip, UserAgent userAgent) {
+        return new AccessLog(user, AccessType.LOGIN, true, LocalDateTime.now(), ip, userAgent);
     }
 }
