@@ -2,6 +2,7 @@ package com.taemin.user.filter;
 
 
 import com.taemin.user.common.TokenKey;
+import com.taemin.user.domain.token.AccessToken;
 import com.taemin.user.service.TokenProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -34,11 +35,11 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         if (Objects.nonNull(request) && Objects.nonNull(response) && Objects.nonNull(filterChain)) {
             String accessToken = resolveToken(request);
             if (tokenProvider.validateToken(accessToken)) {
-                setAuthentication(accessToken);
+                setAuthentication(AccessToken.of(accessToken));
             } else {
                 // 만료되었을 경우 accessToken 재발급
-                String reissueAccessToken = tokenProvider.reissueAccessToken(accessToken);
-                if (StringUtils.hasText(reissueAccessToken)) {
+                AccessToken reissueAccessToken = tokenProvider.reissueAccessToken(AccessToken.of(accessToken));
+                if (reissueAccessToken != null && StringUtils.hasText(reissueAccessToken.getAccessToken())) {
                     setAuthentication(reissueAccessToken);
                     // 재발급된 accessToken 다시 전달
                     response.setHeader(AUTHORIZATION, TokenKey.TOKEN_PREFIX + reissueAccessToken);
@@ -48,8 +49,8 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         }
     }
 
-    private void setAuthentication(String accessToken) {
-        Authentication authentication = tokenProvider.getAuthentication(accessToken);
+    private void setAuthentication(AccessToken accessToken) {
+        Authentication authentication = tokenProvider.getAuthentication(accessToken.getAccessToken());
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 

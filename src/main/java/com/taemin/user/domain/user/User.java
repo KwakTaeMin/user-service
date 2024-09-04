@@ -11,7 +11,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -33,13 +32,16 @@ public class User extends BaseEntity {
     @Enumerated(value = EnumType.STRING)
     private OAuthProvider oauthProvider;
 
-    @Builder
-    public User(Name name, Email email, Profile profile, Role role, OAuthProvider oauthProvider, OAuthId oauthId) {
+    private User(Name name, Email email, Profile profile, Role role, OAuthProvider oauthProvider, OAuthId oauthId) {
         this.name = name;
         this.email = email;
         this.profile = profile;
         this.role = role;
         this.oauthId = oauthId;
         this.oauthProvider = oauthProvider;
+    }
+
+    public static User of(Name name, Email email, Profile profile, Role role, OAuthProvider oauthProvider, OAuthId oauthId) {
+        return new User(name, email, profile, role, oauthProvider, oauthId);
     }
 }

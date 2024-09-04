@@ -1,6 +1,8 @@
 package com.taemin.user.service;
 
 import com.taemin.user.common.PrincipalDetails;
+import com.taemin.user.domain.token.AccessToken;
+import com.taemin.user.domain.token.RefreshToken;
 import com.taemin.user.domain.token.Token;
 import com.taemin.user.domain.user.User;
 import com.taemin.user.exception.TokenException;
@@ -46,13 +48,13 @@ public class TokenProvider {
         secretKey = Keys.hmacShaKeyFor(key.getBytes());
     }
 
-    public String generateToken(Authentication authentication) {
-        return generateToken(authentication, ACCESS_TOKEN_EXPIRE_TIME);
+    public AccessToken generateToken(Authentication authentication) {
+        return AccessToken.of(generateToken(authentication, ACCESS_TOKEN_EXPIRE_TIME));
     }
 
     @Transactional
-    public void refreshToken(Authentication authentication, String accessToken) {
-        String refreshToken = generateToken(authentication, REFRESH_TOKEN_EXPIRE_TIME);
+    public void refreshToken(Authentication authentication, AccessToken accessToken) {
+        RefreshToken refreshToken = RefreshToken.of(generateToken(authentication, REFRESH_TOKEN_EXPIRE_TIME));
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
         User user = entityManager.merge(principalDetails.user());
         tokenService.saveOrUpdate(user, accessToken, refreshToken);
@@ -89,13 +91,13 @@ public class TokenProvider {
             claims.get(KEY_ROLE).toString()));
     }
 
-    public String reissueAccessToken(String accessToken) {
-        if (StringUtils.hasText(accessToken)) {
+    public AccessToken reissueAccessToken(AccessToken accessToken) {
+        if (StringUtils.hasText(accessToken.getAccessToken())) {
             Token token = tokenService.findByAccessTokenOrThrow(accessToken);
-            String refreshToken = token.getRefreshToken();
+            RefreshToken refreshToken = token.getRefreshToken();
 
-            if (validateToken(refreshToken)) {
-                String reissueAccessToken = generateToken(getAuthentication(refreshToken));
+            if (validateToken(refreshToken.getRefreshToken())) {
+                AccessToken reissueAccessToken = generateToken(getAuthentication(refreshToken.getRefreshToken()));
                 tokenService.updateToken(token, reissueAccessToken);
                 return reissueAccessToken;
             }

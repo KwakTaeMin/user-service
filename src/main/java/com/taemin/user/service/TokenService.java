@@ -1,5 +1,7 @@
 package com.taemin.user.service;
 
+import com.taemin.user.domain.token.AccessToken;
+import com.taemin.user.domain.token.RefreshToken;
 import com.taemin.user.domain.token.Token;
 import com.taemin.user.domain.user.User;
 import com.taemin.user.exception.TokenException;
@@ -22,20 +24,20 @@ public class TokenService {
     }
 
     @Transactional
-    public void saveOrUpdate(final User user, String accessToken, String refreshToken) {
+    public void saveOrUpdate(final User user, AccessToken accessToken, RefreshToken refreshToken) {
         tokenRepository.findById(user.getUserId()).ifPresentOrElse(token -> {
             token.updateToken(accessToken, refreshToken);
             tokenRepository.save(token);
-        }, () -> tokenRepository.save(new Token(user, accessToken, refreshToken)));
+        }, () -> tokenRepository.save(Token.of(user, accessToken, refreshToken)));
     }
 
-    public Token findByAccessTokenOrThrow(String accessToken) {
+    public Token findByAccessTokenOrThrow(AccessToken accessToken) {
         return tokenRepository.findByAccessToken(accessToken)
             .orElseThrow(() -> new TokenException(TOKEN_EXPIRED));
     }
 
     @Transactional
-    public void updateToken(Token token, String accessToken) {
+    public void updateToken(Token token, AccessToken accessToken) {
         token.updateAccessToken(accessToken);
         tokenRepository.save(token);
     }

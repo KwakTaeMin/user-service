@@ -30,25 +30,29 @@ public class Token extends BaseEntity {
     private User user;
 
     @Column(nullable = false)
-    private String refreshToken;
+    private RefreshToken refreshToken;
 
     @Column(nullable = false)
-    private String accessToken;
+    private AccessToken accessToken;
 
-    public Token(User user, String accessToken, String refreshToken) {
+    private Token(User user, AccessToken accessToken, RefreshToken refreshToken) {
         this.user = user;
         this.refreshToken = refreshToken;
         this.accessToken = accessToken;
     }
 
-    public void updateToken(String accessToken, String refreshToken) {
+    public static Token of(User user, AccessToken accessToken, RefreshToken refreshToken) {
+        return new Token(user, accessToken, refreshToken);
+    }
+
+    public void updateToken(AccessToken accessToken, RefreshToken refreshToken) {
         if (!Objects.equals(this.accessToken, accessToken)) {
             this.accessToken = accessToken;
         }
         this.refreshToken = refreshToken;
     }
 
-    public void updateAccessToken(String accessToken) {
+    public void updateAccessToken(AccessToken accessToken) {
         this.accessToken = accessToken;
     }
 }

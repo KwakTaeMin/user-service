@@ -60,13 +60,14 @@ public record OAuth2UserInfo(
     }
 
     public User toEntity(String registrationId) {
-        return User.builder()
-            .name(Name.of(name))
-            .email(Email.of(email))
-            .profile(Profile.of(profile))
-            .role(Role.USER)
-            .oauthId(OAuthId.of(oAuthId))
-            .oauthProvider(OAuthProvider.valueOf(registrationId.toUpperCase()))
-            .build();
+        return User.of(
+            Name.of(name),
+            Email.of(email),
+            Profile.of(profile),
+            Role.USER,
+            OAuthProvider.valueOf(registrationId.toUpperCase()),
+            OAuthId.of(oAuthId)
+        );
+
     }
 }

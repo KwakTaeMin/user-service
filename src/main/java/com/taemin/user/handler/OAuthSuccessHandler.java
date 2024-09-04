@@ -1,5 +1,6 @@
 package com.taemin.user.handler;
 
+import com.taemin.user.domain.token.AccessToken;
 import com.taemin.user.service.TokenProvider;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -20,11 +21,11 @@ public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException {
-        String accessToken = tokenProvider.generateToken(authentication);
+        AccessToken accessToken = tokenProvider.generateToken(authentication);
         tokenProvider.refreshToken(authentication, accessToken);
 
         String redirectUrl = UriComponentsBuilder.fromUriString(URI)
-            .queryParam("accessToken", accessToken)
+            .queryParam("accessToken", accessToken.getAccessToken())
             .build().toUriString();
 
         response.sendRedirect(redirectUrl);
