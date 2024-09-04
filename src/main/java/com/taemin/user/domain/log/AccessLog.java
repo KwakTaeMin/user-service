@@ -29,30 +29,30 @@ public class AccessLog {
     private User user;
     @Enumerated(value = EnumType.STRING)
     private AccessType accessType;
+    private boolean state;
     @CreatedDate
     private LocalDateTime accessAt;
     private IP ip;
     @Column(nullable = false)
-    private String userAgent;
-    private String deviceId;
+    private UserAgent userAgent;
 
-    private AccessLog(User user, AccessType accessType, LocalDateTime accessAt, IP ip, String userAgent, String deviceId) {
+    private AccessLog(User user, AccessType accessType, boolean state, LocalDateTime accessAt, IP ip, UserAgent userAgent) {
         this.user = user;
         this.accessType = accessType;
+        this.state = state;
         this.accessAt = accessAt;
         this.ip = ip;
         this.userAgent = userAgent;
-        this.deviceId = deviceId;
     }
 
     public static AccessLog of(
         User user,
         AccessType accessType,
+        boolean state,
         LocalDateTime loginTime,
         IP ip,
-        String userAgent,
-        String deviceId
+        UserAgent userAgent
     ) {
-        return new AccessLog(user, accessType, loginTime, ip, userAgent, deviceId);
+        return new AccessLog(user, accessType, state, loginTime, ip, userAgent);
     }
 }
