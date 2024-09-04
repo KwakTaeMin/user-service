@@ -1,6 +1,7 @@
-package com.taemin.user.domain;
+package com.taemin.user.domain.token;
 
 import com.taemin.user.common.BaseEntity;
+import com.taemin.user.domain.user.User;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

@@ -1,7 +1,7 @@
 package com.taemin.user.service;
 
 import com.taemin.user.common.ErrorCode;
-import com.taemin.user.domain.User;
+import com.taemin.user.domain.user.User;
 import com.taemin.user.exception.UserException;
 import com.taemin.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

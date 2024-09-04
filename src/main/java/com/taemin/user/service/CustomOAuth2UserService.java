@@ -1,9 +1,10 @@
 package com.taemin.user.service;
 
 
-import com.taemin.user.domain.OAuth2UserInfo;
-import com.taemin.user.domain.PrincipalDetails;
-import com.taemin.user.domain.User;
+import com.taemin.user.domain.user.OAuth2UserInfo;
+import com.taemin.user.common.PrincipalDetails;
+import com.taemin.user.domain.user.OAuthId;
+import com.taemin.user.domain.user.User;
 import com.taemin.user.repository.UserRepository;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +35,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     }
 
     private User getOrSave(String registrationId, OAuth2UserInfo oAuth2UserInfo) {
-        User user = userRepository.findByOauthId(oAuth2UserInfo.oAuthId())
+        User user = userRepository.findByOauthId(OAuthId.of(oAuth2UserInfo.oAuthId()))
             .orElseGet(() -> oAuth2UserInfo.toEntity(registrationId));
         return userRepository.save(user);
     }

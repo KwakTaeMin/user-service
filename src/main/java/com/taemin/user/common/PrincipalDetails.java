@@ -1,5 +1,6 @@
-package com.taemin.user.domain;
+package com.taemin.user.common;
 
+import com.taemin.user.domain.user.User;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
