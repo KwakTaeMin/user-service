@@ -1,4 +1,4 @@
-package com.taemin.user.dto;
+package com.taemin.user.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.taemin.user.domain.user.Email;

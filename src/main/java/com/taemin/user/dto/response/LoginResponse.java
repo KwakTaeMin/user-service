@@ -1,4 +1,4 @@
-package com.taemin.user.dto;
+package com.taemin.user.dto.response;
 
 import jakarta.validation.constraints.NotBlank;
 

@@ -1,7 +1,7 @@
 package com.taemin.user.api;
 
 import com.taemin.user.domain.user.User;
-import com.taemin.user.dto.UserResponse;
+import com.taemin.user.dto.response.UserResponse;
 import com.taemin.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
