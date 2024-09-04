@@ -1,7 +1,7 @@
 package com.taemin.user.service;
 
-import com.taemin.user.domain.Token;
-import com.taemin.user.domain.User;
+import com.taemin.user.domain.token.Token;
+import com.taemin.user.domain.user.User;
 import com.taemin.user.exception.TokenException;
 import com.taemin.user.repository.TokenRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,9 +26,7 @@ public class TokenService {
         tokenRepository.findById(user.getUserId()).ifPresentOrElse(token -> {
             token.updateToken(accessToken, refreshToken);
             tokenRepository.save(token);
-        }, () -> {
-            tokenRepository.save(new Token(user, accessToken, refreshToken));
-        });
+        }, () -> tokenRepository.save(new Token(user, accessToken, refreshToken)));
     }
 
     public Token findByAccessTokenOrThrow(String accessToken) {

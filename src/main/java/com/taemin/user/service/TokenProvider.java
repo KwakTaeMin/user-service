@@ -1,8 +1,8 @@
 package com.taemin.user.service;
 
-import com.taemin.user.domain.PrincipalDetails;
-import com.taemin.user.domain.Token;
-import com.taemin.user.domain.User;
+import com.taemin.user.common.PrincipalDetails;
+import com.taemin.user.domain.token.Token;
+import com.taemin.user.domain.user.User;
 import com.taemin.user.exception.TokenException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;

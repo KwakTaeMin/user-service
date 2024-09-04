@@ -1,4 +1,4 @@
-package com.taemin.user.domain;
+package com.taemin.user.domain.user;
 
 import com.taemin.user.exception.AuthException;
 import com.taemin.user.type.OAuthProvider;
@@ -34,7 +34,9 @@ public record OAuth2UserInfo(
     }
 
     private static OAuth2UserInfo ofKakao(Map<String, Object> attributes) {
+        @SuppressWarnings("unchecked")
         Map<String, Object> account = (Map<String, Object>) attributes.get("kakao_account");
+        @SuppressWarnings("unchecked")
         Map<String, Object> profile = (Map<String, Object>) account.get("profile");
 
         return OAuth2UserInfo.builder()
@@ -46,6 +48,7 @@ public record OAuth2UserInfo(
     }
 
     private static OAuth2UserInfo ofNaver(Map<String, Object> attributes) {
+        @SuppressWarnings("unchecked")
         Map<String, Object> account = (Map<String, Object>) attributes.get("response");
 
         return OAuth2UserInfo.builder()
@@ -58,11 +61,11 @@ public record OAuth2UserInfo(
 
     public User toEntity(String registrationId) {
         return User.builder()
-            .name(name)
-            .email(email)
-            .profile(profile)
+            .name(Name.of(name))
+            .email(Email.of(email))
+            .profile(Profile.of(profile))
             .role(Role.USER)
-            .oauthId(oAuthId)
+            .oauthId(OAuthId.of(oAuthId))
             .oauthProvider(OAuthProvider.valueOf(registrationId.toUpperCase()))
             .build();
     }
