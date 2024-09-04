@@ -14,11 +14,11 @@ public class Profile {
     private String profile;
 
     public Profile(String profile) {
+        validateProfile(profile);
         this.profile = profile;
     }
 
     public static Profile of(String profile) {
-        validateProfile(profile);
         return new Profile(profile);
     }
 

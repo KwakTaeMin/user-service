@@ -16,11 +16,11 @@ public class OAuthId {
     private String oauthId;
 
     private OAuthId(String oauthId) {
+        validateOAuthId(oauthId);
         this.oauthId = oauthId;
     }
 
     public static OAuthId of(String oauthId) {
-        validateOAuthId(oauthId);
         return new OAuthId(oauthId);
     }
 
