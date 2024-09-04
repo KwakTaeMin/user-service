@@ -2,6 +2,7 @@ package com.taemin.user.domain.user;
 
 import com.taemin.user.common.ErrorCode;
 import com.taemin.user.exception.UserException;
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = lombok.AccessLevel.PROTECTED)
 public class Name {
     public static final int NAME_MAX_LENGTH = 50;
+
+    @Column(nullable = false)
     private String name;
 
     private Name(String name) {

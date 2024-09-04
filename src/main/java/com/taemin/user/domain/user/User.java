@@ -26,7 +26,6 @@ public class User extends BaseEntity {
     private Name name;
     private Email email;
     private Profile profile;
-    @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private Role role;
     private OAuthId oauthId;

@@ -4,6 +4,7 @@ package com.taemin.user.domain.user;
 import com.taemin.user.common.ErrorCode;
 import com.taemin.user.convert.EncryptConverter;
 import com.taemin.user.exception.UserException;
+import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
@@ -16,6 +17,7 @@ public class Email {
 
     private static final String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
 
+    @Column(nullable = false)
     @Convert(converter = EncryptConverter.class)
     private String email;
 

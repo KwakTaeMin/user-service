@@ -20,11 +20,9 @@ public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException {
-        // accessToken, refreshToken 발급
         String accessToken = tokenProvider.generateToken(authentication);
         tokenProvider.refreshToken(authentication, accessToken);
 
-        // 토큰 전달을 위한 redirect
         String redirectUrl = UriComponentsBuilder.fromUriString(URI)
             .queryParam("accessToken", accessToken)
             .build().toUriString();

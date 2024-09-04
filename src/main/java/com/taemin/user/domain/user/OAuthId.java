@@ -2,6 +2,7 @@ package com.taemin.user.domain.user;
 
 import com.taemin.user.common.ErrorCode;
 import com.taemin.user.exception.UserException;
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,6 +11,8 @@ import lombok.NoArgsConstructor;
 @Embeddable
 @NoArgsConstructor(access = lombok.AccessLevel.PROTECTED)
 public class OAuthId {
+
+    @Column(nullable = false)
     private String oauthId;
 
     private OAuthId(String oauthId) {

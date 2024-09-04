@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @Embeddable
 @NoArgsConstructor(access = lombok.AccessLevel.PROTECTED)
 public class Profile {
+
     private String profile;
 
     public Profile(String profile) {
