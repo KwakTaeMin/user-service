@@ -8,6 +8,7 @@ import com.taemin.user.domain.user.Profile;
 import com.taemin.user.domain.user.User;
 import com.taemin.user.type.OAuthProvider;
 import com.taemin.user.type.Role;
+import java.time.LocalDateTime;
 
 public record UserResponse(
     Long userId,
@@ -16,9 +17,12 @@ public record UserResponse(
     @JsonUnwrapped Profile profile,
     Role role,
     @JsonUnwrapped OAuthId oauthId,
-    OAuthProvider oauthProvider
+    OAuthProvider oauthProvider,
+    LocalDateTime createdAt,
+    LocalDateTime updatedAt
 ) {
     public static UserResponse of(User user) {
-        return new UserResponse(user.getUserId(), user.getName(), user.getEmail(), user.getProfile(), user.getRole(), user.getOauthId(), user.getOauthProvider());
+        return new UserResponse(user.getUserId(), user.getName(), user.getEmail(), user.getProfile(), user.getRole(), user.getOauthId(),
+                                user.getOauthProvider(), user.getCreatedAt(), user.getUpdatedAt());
     }
 }
