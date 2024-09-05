@@ -1,4 +1,7 @@
-logging.level.web: debug
+logging:
+  level:
+    org.springframework.cloud.openfeign: DEBUG
+    feign: DEBUG
 jwt:
   key: ${JWT_KET}
 spring:

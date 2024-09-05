@@ -31,10 +31,10 @@ public class Email {
     }
 
     private static void validateEmail(String email) {
-        if(email == null || email.trim().isEmpty()) {
+        if (email == null || email.trim().isEmpty()) {
             return;
         }
-        if(!email.matches(EMAIL_REGEX)) {
+        if (!email.matches(EMAIL_REGEX)) {
             throw new UserException(ErrorCode.USER_EMAIL_VALIDATE_FAIL);
         }
     }

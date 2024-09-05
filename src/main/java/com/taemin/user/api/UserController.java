@@ -1,7 +1,7 @@
 package com.taemin.user.api;
 
 import com.taemin.user.domain.user.User;
-import com.taemin.user.dto.UserResponse;
+import com.taemin.user.dto.response.UserResponse;
 import com.taemin.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -25,7 +25,7 @@ public class UserController {
     @GetMapping("/current")
     public ResponseEntity<UserResponse> getCurrentUser(@AuthenticationPrincipal UserDetails userDetails) {
         User currentUser = userService.getUserById(Long.parseLong(userDetails.getUsername()));
-        logger.info("Currently logged in user: {}",  currentUser);
+        logger.info("Currently logged in user: {}", currentUser);
         return ResponseEntity.ok(UserResponse.of(currentUser));
     }
 }

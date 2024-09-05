@@ -28,7 +28,7 @@ public class AuthenticationEventListener {
     private final UserRepository userRepository;
     private final AccessLogRepository accessLogRepository;
 
-    @EventListener
+    @EventListener //todo : OAuth Login 시 Event 발생하는데 OAuth Login은 Front로 넘겨서 Back-end는 Event를 만들어야한다.
     public void onAuthenticationSuccess(AuthenticationSuccessEvent event) {
         UserDetails userDetails = (UserDetails) event.getAuthentication().getPrincipal();
         WebAuthenticationDetails authDetails = (WebAuthenticationDetails) event.getAuthentication().getDetails();

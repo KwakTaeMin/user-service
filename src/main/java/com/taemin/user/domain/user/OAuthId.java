@@ -25,7 +25,7 @@ public class OAuthId {
     }
 
     private static void validateOAuthId(String oauthId) {
-        if(oauthId == null || oauthId.trim().isEmpty()) {
+        if (oauthId == null || oauthId.trim().isEmpty()) {
             throw new UserException(ErrorCode.USER_OAUTH_ID_VALIDATE_FAIL);
         }
     }

@@ -23,7 +23,7 @@ public class Profile {
     }
 
     private static void validateProfile(String profile) {
-        if(profile == null || profile.trim().isEmpty()) {
+        if (profile == null || profile.trim().isEmpty()) {
             throw new UserException(ErrorCode.USER_PROFILE_VALIDATE_FAIL);
         }
     }
