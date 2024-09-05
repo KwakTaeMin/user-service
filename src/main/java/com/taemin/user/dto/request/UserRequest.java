@@ -5,7 +5,7 @@ import com.taemin.user.type.OAuthProvider;
 import com.taemin.user.type.Role;
 import jakarta.validation.constraints.NotNull;
 
-public record SignUpRequest(
+public record UserRequest(
         @NotNull OAuthProvider oAuthProvider,
         @NotNull String oauthId,
         @NotNull String name,

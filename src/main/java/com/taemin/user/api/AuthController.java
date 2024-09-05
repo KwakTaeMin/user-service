@@ -1,11 +1,10 @@
 package com.taemin.user.api;
 
-import com.taemin.user.dto.response.SignUpResponse;
+import com.taemin.user.domain.token.AccessToken;
 import com.taemin.user.dto.response.LoginResponse;
-import com.taemin.user.dto.request.SignUpRequest;
+import com.taemin.user.dto.request.UserRequest;
 import com.taemin.user.service.TokenService;
 import com.taemin.user.service.UserService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -20,20 +19,10 @@ public class AuthController {
     private final UserService userService;
     private final TokenService tokenService;
 
-    @PostMapping("/signUp")
-    public ResponseEntity<SignUpResponse> signUp(@RequestBody SignUpRequest signUpRequest) {
-        userService.signUp(signUpRequest);
-        return ResponseEntity.ok(new SignUpResponse());
-    }
-
-    @GetMapping("/login/success")
-    public ResponseEntity<LoginResponse> loginSuccess(@Valid LoginResponse loginResponse) {
-        return ResponseEntity.ok(loginResponse);
-    }
-
-    @GetMapping("/login/fail")
-    public ResponseEntity<String> loginFail() {
-        return ResponseEntity.ok("login fail");
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> login(@RequestBody UserRequest userRequest) {
+        AccessToken accessToken = userService.login(userRequest);
+        return ResponseEntity.ok(new LoginResponse(accessToken.getAccessToken()));
     }
 
     @GetMapping("/logout")

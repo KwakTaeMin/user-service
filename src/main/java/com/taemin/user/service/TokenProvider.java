@@ -1,39 +1,39 @@
 package com.taemin.user.service;
 
-import com.taemin.user.common.PrincipalDetails;
+import com.taemin.user.common.ErrorCode;
 import com.taemin.user.domain.token.AccessToken;
 import com.taemin.user.domain.token.RefreshToken;
 import com.taemin.user.domain.token.Token;
 import com.taemin.user.domain.user.User;
 import com.taemin.user.exception.TokenException;
+import com.taemin.user.exception.UserException;
+import com.taemin.user.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
-import jakarta.persistence.EntityManager;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.crypto.SecretKey;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import static com.taemin.user.common.ErrorCode.INVALID_JWT_SIGNATURE;
 import static com.taemin.user.common.ErrorCode.INVALID_TOKEN;
+import static com.taemin.user.common.ErrorCode.TOKEN_EXPIRED;
 
 @Service
 @RequiredArgsConstructor
 public class TokenProvider {
 
+    private final UserRepository userRepository;
     @Value("${jwt.key}")
     private String key;
     private SecretKey secretKey;
@@ -41,35 +41,29 @@ public class TokenProvider {
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60L * 24 * 7;
     private static final String KEY_ROLE = "role";
     private final TokenService tokenService;
-    private final EntityManager entityManager;
 
     @PostConstruct
     private void setSecretKey() {
         secretKey = Keys.hmacShaKeyFor(key.getBytes());
     }
 
-    public AccessToken generateToken(Authentication authentication) {
-        return AccessToken.of(generateToken(authentication, ACCESS_TOKEN_EXPIRE_TIME));
+    public AccessToken generateToken(User user) {
+        return AccessToken.of(generateToken(user, ACCESS_TOKEN_EXPIRE_TIME));
     }
 
-    @Transactional
-    public void refreshToken(Authentication authentication, AccessToken accessToken) {
-        RefreshToken refreshToken = RefreshToken.of(generateToken(authentication, REFRESH_TOKEN_EXPIRE_TIME));
-        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-        User user = entityManager.merge(principalDetails.user());
+    @Transactional(propagation = Propagation.MANDATORY)
+    public void refreshToken(User user, AccessToken accessToken) {
+        RefreshToken refreshToken = RefreshToken.of(generateToken(user, REFRESH_TOKEN_EXPIRE_TIME));
         tokenService.saveOrUpdate(user, accessToken, refreshToken);
     }
 
-    private String generateToken(Authentication authentication, long expireTime) {
+    private String generateToken(User user, long expireTime) {
         Date now = new Date();
         Date expiredDate = new Date(now.getTime() + expireTime);
 
-        String authorities = authentication.getAuthorities().stream()
-            .map(GrantedAuthority::getAuthority)
-            .collect(Collectors.joining());
-
+        String authorities = user.getRole().getAuthority();
         return Jwts.builder()
-            .subject(authentication.getName())
+            .subject(String.valueOf(user.getUserId()))
             .claim(KEY_ROLE, authorities)
             .issuedAt(now)
             .expiration(expiredDate)
@@ -77,18 +71,9 @@ public class TokenProvider {
             .compact();
     }
 
-    public Authentication getAuthentication(String token) {
+    public User getUserByToken(String token) {
         Claims claims = parseClaims(token);
-        List<SimpleGrantedAuthority> authorities = getAuthorities(claims);
-
-        org.springframework.security.core.userdetails.User principal = new org.springframework.security.core.userdetails.User(
-            claims.getSubject(), "", authorities);
-        return new UsernamePasswordAuthenticationToken(principal, token, authorities);
-    }
-
-    private List<SimpleGrantedAuthority> getAuthorities(Claims claims) {
-        return Collections.singletonList(new SimpleGrantedAuthority(
-            claims.get(KEY_ROLE).toString()));
+        return userRepository.findById(Long.parseLong(claims.getSubject())).orElseThrow(() -> new UserException(ErrorCode.USER_NOT_FOUND));
     }
 
     public AccessToken reissueAccessToken(AccessToken accessToken) {
@@ -97,12 +82,12 @@ public class TokenProvider {
             RefreshToken refreshToken = token.getRefreshToken();
 
             if (validateToken(refreshToken.getRefreshToken())) {
-                AccessToken reissueAccessToken = generateToken(getAuthentication(refreshToken.getRefreshToken()));
+                AccessToken reissueAccessToken = generateToken(getUserByToken(refreshToken.getRefreshToken()));
                 tokenService.updateToken(token, reissueAccessToken);
                 return reissueAccessToken;
             }
         }
-        return null;
+        throw new TokenException(TOKEN_EXPIRED);
     }
 
     public boolean validateToken(String token) {

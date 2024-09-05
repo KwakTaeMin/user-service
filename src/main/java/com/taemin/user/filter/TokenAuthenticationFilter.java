@@ -3,6 +3,7 @@ package com.taemin.user.filter;
 
 import com.taemin.user.common.TokenKey;
 import com.taemin.user.domain.token.AccessToken;
+import com.taemin.user.domain.user.User;
 import com.taemin.user.service.TokenProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -13,6 +14,7 @@ import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.lang.Nullable;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -37,11 +39,9 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
             if (tokenProvider.validateToken(accessToken)) {
                 setAuthentication(AccessToken.of(accessToken));
             } else {
-                // 만료되었을 경우 accessToken 재발급
                 AccessToken reissueAccessToken = tokenProvider.reissueAccessToken(AccessToken.of(accessToken));
                 if (reissueAccessToken != null && StringUtils.hasText(reissueAccessToken.getAccessToken())) {
                     setAuthentication(reissueAccessToken);
-                    // 재발급된 accessToken 다시 전달
                     response.setHeader(AUTHORIZATION, TokenKey.TOKEN_PREFIX + reissueAccessToken);
                 }
             }
@@ -50,7 +50,8 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private void setAuthentication(AccessToken accessToken) {
-        Authentication authentication = tokenProvider.getAuthentication(accessToken.getAccessToken());
+        User user = tokenProvider.getUserByToken(accessToken.getAccessToken());
+        Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
