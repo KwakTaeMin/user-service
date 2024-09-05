@@ -87,7 +87,7 @@ public class TokenProvider {
                 return reissueAccessToken;
             }
         }
-        throw new TokenException(TOKEN_EXPIRED);
+        return null;
     }
 
     public boolean validateToken(String token) {

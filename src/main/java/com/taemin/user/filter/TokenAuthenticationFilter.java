@@ -1,7 +1,6 @@
 package com.taemin.user.filter;
 
 
-import com.taemin.user.common.TokenKey;
 import com.taemin.user.domain.token.AccessToken;
 import com.taemin.user.domain.user.User;
 import com.taemin.user.service.TokenProvider;
@@ -26,6 +25,8 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 @RequiredArgsConstructor
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
+    public static final String TOKEN_PREFIX = "Bearer ";
+
     private final TokenProvider tokenProvider;
 
     @Override
@@ -42,7 +43,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                 AccessToken reissueAccessToken = tokenProvider.reissueAccessToken(AccessToken.of(accessToken));
                 if (reissueAccessToken != null && StringUtils.hasText(reissueAccessToken.getAccessToken())) {
                     setAuthentication(reissueAccessToken);
-                    response.setHeader(AUTHORIZATION, TokenKey.TOKEN_PREFIX + reissueAccessToken);
+                    response.setHeader(AUTHORIZATION, TOKEN_PREFIX + reissueAccessToken);
                 }
             }
             filterChain.doFilter(request, response);
@@ -57,9 +58,9 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     private String resolveToken(HttpServletRequest request) {
         String token = request.getHeader(AUTHORIZATION);
-        if (ObjectUtils.isEmpty(token) || !token.startsWith(TokenKey.TOKEN_PREFIX)) {
+        if (ObjectUtils.isEmpty(token) || !token.startsWith(TOKEN_PREFIX)) {
             return null;
         }
-        return token.substring(TokenKey.TOKEN_PREFIX.length());
+        return token.substring(TOKEN_PREFIX.length());
     }
 }

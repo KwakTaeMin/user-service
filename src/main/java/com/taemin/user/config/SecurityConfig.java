@@ -4,6 +4,7 @@ import com.taemin.user.filter.TokenAuthenticationFilter;
 import com.taemin.user.filter.TokenExceptionFilter;
 import com.taemin.user.handler.CustomAccessDeniedHandler;
 import com.taemin.user.handler.CustomAuthenticationEntryPoint;
+import com.taemin.user.service.CustomOAuth2UserService;
 import com.taemin.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -28,6 +29,7 @@ public class SecurityConfig {
     private final TokenAuthenticationFilter tokenAuthenticationFilter;
     private final TokenExceptionFilter tokenExceptionFilter;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+    private final CustomOAuth2UserService customOAuth2UserService;
     private final UserService userService;
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
 
@@ -63,6 +65,8 @@ public class SecurityConfig {
                     "/v3/api-docs/**",
                     "/favicon.ico").permitAll()
                 .anyRequest().authenticated()
+            ).oauth2Login(
+                oauth2 -> oauth2.userInfoEndpoint(c-> c.userService(customOAuth2UserService))
             )
             .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
             .addFilterBefore(tokenExceptionFilter, tokenAuthenticationFilter.getClass())
