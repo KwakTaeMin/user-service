@@ -1,8 +1,8 @@
 package com.taemin.user.api;
 
 import com.taemin.user.domain.token.AccessToken;
-import com.taemin.user.dto.response.LoginResponse;
 import com.taemin.user.dto.request.UserRequest;
+import com.taemin.user.dto.response.LoginResponse;
 import com.taemin.user.service.TokenService;
 import com.taemin.user.service.UserService;
 import lombok.RequiredArgsConstructor;

@@ -8,8 +8,6 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.lang.Nullable;
@@ -19,6 +17,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import java.io.IOException;
+import java.util.Objects;
+
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @Component
@@ -31,9 +33,9 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(
-        @Nullable HttpServletRequest request,
-        @Nullable HttpServletResponse response,
-        @Nullable FilterChain filterChain
+            @Nullable HttpServletRequest request,
+            @Nullable HttpServletResponse response,
+            @Nullable FilterChain filterChain
     ) throws ServletException, IOException {
         if (Objects.nonNull(request) && Objects.nonNull(response) && Objects.nonNull(filterChain)) {
             String accessToken = resolveToken(request);

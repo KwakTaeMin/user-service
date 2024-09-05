@@ -25,7 +25,7 @@ public class UserController {
     @GetMapping("/current")
     public ResponseEntity<UserResponse> getCurrentUser(@AuthenticationPrincipal UserDetails userDetails) {
         User currentUser = userService.getUserById(Long.parseLong(userDetails.getUsername()));
-        logger.info("Currently logged in user: {}",  currentUser);
+        logger.info("Currently logged in user: {}", currentUser);
         return ResponseEntity.ok(UserResponse.of(currentUser));
     }
 }

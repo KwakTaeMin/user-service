@@ -14,20 +14,18 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import javax.crypto.SecretKey;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+
+import javax.crypto.SecretKey;
+import java.util.Date;
+
 import static com.taemin.user.common.ErrorCode.INVALID_JWT_SIGNATURE;
 import static com.taemin.user.common.ErrorCode.INVALID_TOKEN;
-import static com.taemin.user.common.ErrorCode.TOKEN_EXPIRED;
 
 @Service
 @RequiredArgsConstructor
@@ -63,12 +61,12 @@ public class TokenProvider {
 
         String authorities = user.getRole().getAuthority();
         return Jwts.builder()
-            .subject(String.valueOf(user.getUserId()))
-            .claim(KEY_ROLE, authorities)
-            .issuedAt(now)
-            .expiration(expiredDate)
-            .signWith(secretKey, Jwts.SIG.HS512)
-            .compact();
+                .subject(String.valueOf(user.getUserId()))
+                .claim(KEY_ROLE, authorities)
+                .issuedAt(now)
+                .expiration(expiredDate)
+                .signWith(secretKey, Jwts.SIG.HS512)
+                .compact();
     }
 
     public User getUserByToken(String token) {
@@ -102,7 +100,7 @@ public class TokenProvider {
     private Claims parseClaims(String token) {
         try {
             return Jwts.parser().verifyWith(secretKey).build()
-                .parseSignedClaims(token).getPayload();
+                    .parseSignedClaims(token).getPayload();
         } catch (ExpiredJwtException e) {
             return e.getClaims();
         } catch (MalformedJwtException e) {

@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import static com.taemin.user.common.ErrorCode.TOKEN_EXPIRED;
 import static com.taemin.user.common.ErrorCode.USER_NOT_FOUND;
 
@@ -38,7 +39,7 @@ public class TokenService {
 
     public Token findByAccessTokenOrThrow(AccessToken accessToken) {
         return tokenRepository.findByAccessToken(accessToken)
-            .orElseThrow(() -> new TokenException(TOKEN_EXPIRED));
+                .orElseThrow(() -> new TokenException(TOKEN_EXPIRED));
     }
 
     @Transactional
