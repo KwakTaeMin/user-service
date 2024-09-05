@@ -1,7 +1,7 @@
 package com.taemin.user.api;
 
 import com.taemin.user.domain.token.AccessToken;
-import com.taemin.user.dto.request.UserRequest;
+import com.taemin.user.dto.request.LoginRequest;
 import com.taemin.user.dto.response.LoginResponse;
 import com.taemin.user.service.TokenService;
 import com.taemin.user.service.UserService;
@@ -20,8 +20,8 @@ public class AuthController {
     private final TokenService tokenService;
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody UserRequest userRequest) {
-        AccessToken accessToken = userService.login(userRequest);
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
+        AccessToken accessToken = userService.login(loginRequest);
         return ResponseEntity.ok(new LoginResponse(accessToken.getAccessToken()));
     }
 
@@ -29,5 +29,10 @@ public class AuthController {
     public ResponseEntity<Void> logout(@AuthenticationPrincipal UserDetails userDetails) {
         tokenService.deleteToken(Long.parseLong(userDetails.getUsername()));
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/oauth/login")
+    public ResponseEntity<String> oauthLogin() {
+        return ResponseEntity.ok("oauthLogin");
     }
 }
