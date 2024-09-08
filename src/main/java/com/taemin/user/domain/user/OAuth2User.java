@@ -1,6 +1,7 @@
 package com.taemin.user.domain.user;
 
 import com.taemin.user.exception.AuthException;
+import com.taemin.user.external.dto.response.KakaoUserResponse;
 import com.taemin.user.external.dto.response.GoogleUserResponse;
 import com.taemin.user.type.OAuthProvider;
 import com.taemin.user.type.Role;
@@ -20,6 +21,10 @@ public record OAuth2User(
 ) {
     public static OAuth2User of(GoogleUserResponse googleUser) {
         return new OAuth2User(googleUser.getSub(), googleUser.getName(), googleUser.getEmail(), googleUser.getPicture());
+    }
+
+    public static OAuth2User of(KakaoUserResponse kakaoUserResponse) {
+        return new OAuth2User(kakaoUserResponse.getSub(), kakaoUserResponse.getName(), kakaoUserResponse.getEmail(), kakaoUserResponse.getPicture());
     }
 
     public static OAuth2User of(OAuthProvider oAuthProvider, Map<String, Object> attributes) {
