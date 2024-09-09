@@ -34,7 +34,7 @@ public class UserController {
         return ResponseEntity.ok(UserResponse.of(currentUser));
     }
 
-    @GetMapping
+    @GetMapping("/access/log")
     public ResponseEntity<List<AccessLog>> getAccessLog(@AuthenticationPrincipal UserDetails userDetails) {
         List<AccessLog> accessLogs = accessLogService.getAccessLogs(Long.parseLong(userDetails.getUsername()));
         return ResponseEntity.ok(accessLogs);
