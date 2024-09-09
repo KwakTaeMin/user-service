@@ -9,7 +9,9 @@ import com.taemin.user.dto.request.LoginRequest;
 import com.taemin.user.exception.UserException;
 import com.taemin.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,6 +27,7 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final TokenProvider tokenProvider;
     private final OAuthUserService oAuthUserService;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Override
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
@@ -40,11 +43,11 @@ public class UserService implements UserDetailsService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         AccessToken accessToken = tokenProvider.generateToken(user);
         tokenProvider.refreshToken(user, accessToken);
+        eventPublisher.publishEvent(new AuthenticationSuccessEvent(authentication));
         return accessToken;
     }
 
     public User getUserById(Long userId) {
         return userRepository.findById(userId).orElseThrow(() -> new UserException(ErrorCode.USER_NOT_FOUND));
     }
-
 }
