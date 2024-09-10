@@ -38,7 +38,7 @@ public class UserService implements UserDetailsService {
     public AccessToken login(LoginRequest loginRequest) {
         OAuth2User oAuth2User = oAuthUserService.getOAuthUser(loginRequest.toOauthToken());
         OAuthId oAuthId = OAuthId.of(oAuth2User.oAuthId());
-        User user = userRepository.findByOauthId(oAuthId).orElseGet(() -> userRepository.save(oAuth2User.toEntity(loginRequest.oAuthProvider())));
+        User user = userRepository.findByOauthId(oAuthId).orElseGet(() -> userRepository.save(oAuth2User.toEntity()));
         Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
         AccessToken accessToken = tokenProvider.generateToken(user);

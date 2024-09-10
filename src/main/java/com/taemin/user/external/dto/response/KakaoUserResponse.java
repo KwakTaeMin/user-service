@@ -1,5 +1,6 @@
 package com.taemin.user.external.dto.response;
 
+import com.taemin.user.type.OAuthProvider;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class KakaoUserResponse {
+public class KakaoUserResponse implements OAuthUserResponse {
     private Long id;
     private String connectedAt;
     private Properties properties;
@@ -36,15 +37,28 @@ public class KakaoUserResponse {
         }
     }
 
-    public String getNickName() {
-        return properties.getNickname();
+    @Override
+    public String getId() {
+        return String.valueOf(id);
     }
 
+    @Override
     public String getEmail() {
         return kakaoAccount.getEmail();
     }
 
-    public String getProfileImageUrl() {
+    @Override
+    public String getName() {
+        return properties.getNickname();
+    }
+
+    @Override
+    public String getProfileImage() {
         return kakaoAccount.getProfile().getProfileImageUrl();
+    }
+
+    @Override
+    public OAuthProvider getOAuthProvider() {
+        return OAuthProvider.KAKAO;
     }
 }
