@@ -1,21 +1,50 @@
 package com.taemin.user.external.dto.response;
 
-
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class KakaoUserResponse {
-    private String sub;
-    private String name;
-    private String picture;
-    private String email;
+    private Long id;
+    private String connectedAt;
+    private Properties properties;
+    private KakaoAccount kakaoAccount;
 
-    public KakaoUserResponse(String sub, String name, String picture, String email) {
-        this.sub = sub;
-        this.name = name;
-        this.picture = picture;
-        this.email = email;
+    @Getter
+    @AllArgsConstructor
+    public static class Properties {
+        private String nickname;
+        private String profileImage;
+        private String thumbnailImage;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class KakaoAccount {
+        private String email;
+        private Profile profile;
+
+        @Getter
+        @AllArgsConstructor
+        public static class Profile {
+            private String nickname;
+            private String profileImageUrl;
+        }
+    }
+
+    public String getNickName() {
+        return properties.getNickname();
+    }
+
+    public String getEmail() {
+        return kakaoAccount.getEmail();
+    }
+
+    public String getProfileImageUrl() {
+        return kakaoAccount.getProfile().getProfileImageUrl();
     }
 }

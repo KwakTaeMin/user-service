@@ -10,7 +10,7 @@ import static org.springframework.http.HttpStatus.*;
 @RequiredArgsConstructor
 public enum ErrorCode {
     // auth
-    ILLEGAL_REGISTRATION_ID(NOT_ACCEPTABLE, "illegal registration id"),
+    ILLEGAL_OAUTH_PROVIDER(NOT_ACCEPTABLE, "지원하지 않은 OAuth Provider 입니다."),
     TOKEN_EXPIRED(UNAUTHORIZED, "토큰이 만료되었습니다."),
     INVALID_TOKEN(UNAUTHORIZED, "올바르지 않은 토큰입니다."),
     INVALID_JWT_SIGNATURE(UNAUTHORIZED, "잘못된 JWT 시그니처입니다."),

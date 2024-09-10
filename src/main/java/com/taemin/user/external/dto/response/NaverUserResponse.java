@@ -1,21 +1,25 @@
 package com.taemin.user.external.dto.response;
 
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class NaverUserResponse {
-    private String sub;
-    private String name;
-    private String picture;
-    private String email;
+    private String resultcode;
+    private String message;
+    private Response response;
 
-    public NaverUserResponse(String sub, String name, String picture, String email) {
-        this.sub = sub;
-        this.name = name;
-        this.picture = picture;
-        this.email = email;
+    @Getter
+    @AllArgsConstructor
+    public static class Response {
+        private String id;
+        private String email;
+        private String name;
+        private String profileImage;
     }
 }
