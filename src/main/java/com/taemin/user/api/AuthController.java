@@ -30,9 +30,4 @@ public class AuthController {
         tokenService.deleteToken(Long.parseLong(userDetails.getUsername()));
         return ResponseEntity.noContent().build();
     }
-
-    @GetMapping("/oauth/login")
-    public ResponseEntity<String> oauthLogin() {
-        return ResponseEntity.ok("oauthLogin");
-    }
 }

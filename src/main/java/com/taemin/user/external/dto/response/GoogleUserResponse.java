@@ -1,12 +1,11 @@
 package com.taemin.user.external.dto.response;
 
+import com.taemin.user.type.OAuthProvider;
 import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class GoogleUserResponse {
+public class GoogleUserResponse implements OAuthUserResponse {
     private String sub;
     private String name;
     private String picture;
@@ -17,5 +16,30 @@ public class GoogleUserResponse {
         this.name = name;
         this.picture = picture;
         this.email = email;
+    }
+
+    @Override
+    public String getId() {
+        return sub;
+    }
+
+    @Override
+    public String getEmail() {
+        return email;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String getProfileImage() {
+        return picture;
+    }
+
+    @Override
+    public OAuthProvider getOAuthProvider() {
+        return OAuthProvider.GOOGLE;
     }
 }
