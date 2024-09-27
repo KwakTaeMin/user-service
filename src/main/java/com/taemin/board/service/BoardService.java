@@ -20,7 +20,7 @@ public class BoardService {
     }
 
     public Page<Board> getBoardList(Pageable pageable) {
-        return boardRepository.findBoardListPage(pageable);
+        return boardRepository.findAll(pageable);
     }
 
     public Board readBoard(Long id) {
