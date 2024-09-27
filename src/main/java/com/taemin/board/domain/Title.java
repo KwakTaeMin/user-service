@@ -16,4 +16,8 @@ public class Title {
     private Title(String title) {
         this.title = title;
     }
+
+    public static Title of(String title) {
+        return new Title(title);
+    }
 }

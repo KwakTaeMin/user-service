@@ -16,4 +16,8 @@ public class Content {
     private Content(String content) {
         this.content = content;
     }
+
+    public static Content of(String content) {
+        return new Content(content);
+    }
 }
