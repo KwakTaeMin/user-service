@@ -15,13 +15,15 @@ public class Board extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String title;
-    private String content;
+    @Embedded
+    private Title title;
+    @Embedded
+    private Content content;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Board(String title, String content, User user) {
+    public Board(Title title, Content content, User user) {
         this.title = title;
         this.content = content;
         this.user = user;
