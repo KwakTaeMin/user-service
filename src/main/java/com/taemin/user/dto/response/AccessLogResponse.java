@@ -1,11 +1,13 @@
 package com.taemin.user.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import com.taemin.user.domain.log.AccessLog;
 import com.taemin.user.domain.log.AccessType;
 import com.taemin.user.domain.log.IP;
 import com.taemin.user.domain.log.UserAgent;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public record AccessLogResponse(
         Long id,
@@ -16,4 +18,7 @@ public record AccessLogResponse(
         @JsonUnwrapped IP ip,
         @JsonUnwrapped UserAgent userAgent
 ) {
+    public static List<AccessLogResponse> of(List<AccessLog> accessLogs) {
+        return null;
+    }
 }

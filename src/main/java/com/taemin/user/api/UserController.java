@@ -2,6 +2,7 @@ package com.taemin.user.api;
 
 import com.taemin.user.domain.log.AccessLog;
 import com.taemin.user.domain.user.User;
+import com.taemin.user.dto.response.AccessLogResponse;
 import com.taemin.user.dto.response.UserResponse;
 import com.taemin.user.service.AccessLogService;
 import com.taemin.user.service.UserService;
@@ -35,9 +36,9 @@ public class UserController {
     }
 
     @GetMapping("/access/log")
-    public ResponseEntity<List<AccessLog>> getAccessLog(@AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<List<AccessLogResponse>> getAccessLog(@AuthenticationPrincipal UserDetails userDetails) {
         List<AccessLog> accessLogs = accessLogService.getAccessLogs(Long.parseLong(userDetails.getUsername()));
-        return ResponseEntity.ok(accessLogs);
+        return ResponseEntity.ok(AccessLogResponse.of(accessLogs));
     }
 }
 
