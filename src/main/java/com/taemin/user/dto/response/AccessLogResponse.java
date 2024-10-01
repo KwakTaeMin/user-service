@@ -19,6 +19,8 @@ public record AccessLogResponse(
         @JsonUnwrapped UserAgent userAgent
 ) {
     public static List<AccessLogResponse> of(List<AccessLog> accessLogs) {
-        return null;
+        return accessLogs.stream().map(accessLog ->
+                new AccessLogResponse(accessLog.getId(), accessLog.getUser().getUserId(), accessLog.getAccessType(), accessLog.isState(), accessLog.getAccessAt(), accessLog.getIp(), accessLog.getUserAgent()))
+                .toList();
     }
 }
