@@ -20,7 +20,7 @@ public class AccessLogService {
     private final UserRepository userRepository;
 
     public List<AccessLog> getAccessLogs(long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserException(USER_NOT_FOUND));
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserException(USER_NOT_FOUND));// todo front 확인
         return accessLogRepository.findByUser(user);
     }
 }
