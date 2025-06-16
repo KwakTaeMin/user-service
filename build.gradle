@@ -65,7 +65,8 @@ dependencies {
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0'
 
     // connector
-    implementation 'mysql:mysql-connector-java:8.0.33'
+    implementation 'org.xerial:sqlite-jdbc:3.45.2.0'
+    implementation 'org.hibernate.orm:hibernate-community-dialects'
 
     // lombok
     annotationProcessor 'org.projectlombok:lombok'

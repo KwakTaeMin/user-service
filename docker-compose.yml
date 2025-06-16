@@ -1,24 +1,6 @@
 version: '3.8'
 
 services:
-  mysql:
-    image: mysql:8.0
-    container_name: user-service-db
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: user-service
-      MYSQL_USER: user
-      MYSQL_PASSWORD: user
-      TZ: Asia/Seoul
-      MYSQL_CHARACTER_SET_SERVER: utf8mb4
-      MYSQL_COLLATION_SERVER: utf8mb4_unicode_ci
-    ports:
-      - "3307:3306"
-    volumes:
-      - ./mysql_data:/var/lib/mysql
-    networks:
-      - user-network
-
   user-service:
     image: user-service:0.0.1
     container_name: user-service-app
@@ -26,15 +8,12 @@ services:
       - .env
     ports:
       - "80:8080"
-    depends_on:
-      - mysql
     networks:
       - user-network
     volumes:
       - ./logs:/user-service/logs
+      - ./data:/user-service/data
 
 networks:
   user-network:
     driver: bridge
-volumes:
-  mysql_data:

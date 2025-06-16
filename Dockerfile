@@ -6,5 +6,6 @@ RUN ./gradlew build --no-daemon
 FROM amazoncorretto:21
 WORKDIR /user-service
 COPY --from=build /user-service/build/libs/user-service-0.0.1.jar app.jar
+RUN mkdir -p data
 
 ENTRYPOINT ["sh", "-c", "java -jar app.jar"]
