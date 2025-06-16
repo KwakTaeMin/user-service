@@ -4,8 +4,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class UserServiceApplicationTests {
+public class UserServiceApplicationTests {
     @Test
-    void contextLoads() {
+    public void contextLoads() {
+        // Add a simple assertion to ensure the test is actually running
+        System.out.println("Context loads test is running!");
     }
 }

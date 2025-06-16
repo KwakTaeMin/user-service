@@ -1,0 +1,32 @@
+logging:
+  level:
+    org.springframework.cloud.openfeign: DEBUG
+    feign: DEBUG
+jwt:
+  key: test-jwt-key
+spring:
+  application:
+    name: user-service
+  datasource:
+    url: jdbc:sqlite:data/user-service-test.db
+    driver-class-name: org.sqlite.JDBC
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.community.dialect.SQLiteDialect
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: test-client-id
+            client-secret: test-client-secret
+            scope: email,profile
+            redirect-uri: http://localhost:8080/login/oauth2/code/google
+            client-name: Google
+            authorization-grant-type: authorization_code
